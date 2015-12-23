@@ -1,26 +1,26 @@
-<% layout('/layout/page') -%>
+<% layout('./layout/page') -%>
 <% block('title', "Регистрация и вход") -%>
 
-<p>Введите имя пользователя и пароль. Если такого пользователя нет - он будет создан.</p>
+<p>Enter name and password.</p>
 
 <form class="form-horizontal login-form" action="/auth/login" method="POST" name="login-form">
   <div class="form-group">
-    <label for="input-username" class="col-lg-2 control-label">Имя</label>
+    <label for="input-username" class="col-lg-2 control-label">Name</label>
 
     <div class="col-lg-10">
-      <input name="username" value="name" type="text" class="form-control" id="input-username" placeholder="Имя">
+      <input name="username" value="Dab" type="text" class="form-control" id="input-username" placeholder="Имя">
     </div>
   </div>
   <div class="form-group">
-    <label for="input-password" class="col-lg-2 control-label">Пароль</label>
+    <label for="input-password" class="col-lg-2 control-label">Password</label>
 
     <div class="col-lg-10">
-      <input name="password" value="pass" type="password" class="form-control" id="input-password" placeholder="Пароль">
+      <input name="password" value="12345" type="password" class="form-control" id="input-password" placeholder="Пароль">
     </div>
   </div>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <button type="submit" class="btn btn-primary" data-loading-text="Отправляю...">Войти</button>
+      <button type="submit" class="btn btn-primary" data-loading-text="Отправляю...">Sign in</button>
       <span class="help-block error"></span>
     </div>
   </div>

@@ -2,10 +2,11 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var config = require('./config');
-var log = require('./libs/log')(module)
-var app = express();
+var log = require('./libs/log')(module);
+var mongoose = require('./libs/mongoose');
+var HttpError = require('./error').HttpError;
 
-var routes = require('./routes');
+var app = express();
 
 // all environments
 app.engine('ejs', require('ejs-locals'))
@@ -17,7 +18,21 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 
+var MongoStore = require('connect-mongo/src-es5')(express); // a class for  storing session Information
+
+app.use(express.session({
+	secret: config.get("session:secret"),
+	key: config.get("session:key"),
+	cookie: config.get("session:cookie"),
+	store: new MongoStore({mongooseConnection: mongoose.connection})
+}));
+
+app.use(require('./middleware/loadUser'));
+app.use(require('./middleware/sendHttpError'));
+
 app.use(app.router);
+require('./routes')(app);
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -25,8 +40,22 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', function(req, res, next) {
-	res.render('index')
+app.use(function(err, req, res, next) { // error handling middleware
+  if (typeof err == 'number') { // next(404);
+    err = new HttpError(err);
+  }
+
+  if (err instanceof HttpError) {
+    res.sendHttpError(err);
+  } else {
+    if (app.get('env') == 'development') {
+      express.errorHandler()(err, req, res, next);
+    } else {
+      log.error(err);
+      err = new HttpError(500);
+      res.sendHttpError(err);
+    }
+  }
 });
 
 http.createServer(app).listen(config.get('port'), function(){

@@ -1,8 +1,13 @@
+var checkAuth = require('./../middleware/checkAuth');
 
-/*
- * GET home page.
- */
+module.exports = function(app) {
+	app.get('/', require('./frontpage').get);
 
-exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
-};
+	app.get('/login', require('./login').get);
+	app.post('/login', require('./login').post);
+
+	app.get('/logout', require('./logout').post);
+	app.post('/logout', require('./logout').post);
+
+	app.get('/chat', checkAuth, require('./chat').get);
+}

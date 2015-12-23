@@ -6,13 +6,18 @@
     "start": "supervisor app.js"
   },
   "dependencies": {
+    "async": "^1.5.0",
     "connect-mongo": "^1.0.2",
+    "crypto": "0.0.3",
     "ejs": "^2.3.4",
     "ejs-locals": "^1.0.2",
     "express": "3.21.2",
+    "http": "0.0.0",
     "mongodb": "^2.0.52",
     "mongoose": "^4.3.3",
     "nconf": "^0.8.2",
+    "path": "^0.12.7",
+    "util": "^0.10.3",
     "winston": "^2.1.1"
   }
 }
