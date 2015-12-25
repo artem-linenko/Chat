@@ -18,8 +18,9 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 
-var MongoStore = require('connect-mongo/src-es5')(express); // a class for  storing session Information
+var MongoStore = require('connect-mongo/src-es5')(express); // a class for  storing session information
 
+// middleware for handling sessions
 app.use(express.session({
 	secret: config.get("session:secret"),
 	key: config.get("session:key"),
@@ -27,7 +28,7 @@ app.use(express.session({
 	store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
-app.use(require('./middleware/loadUser'));
+app.use(require('./middleware/loadUser')); // initializing user if active session exists
 app.use(require('./middleware/sendHttpError'));
 
 app.use(app.router);
