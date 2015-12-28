@@ -59,6 +59,9 @@ app.use(function(err, req, res, next) { // error handling middleware
   }
 });
 
-http.createServer(app).listen(config.get('port'), function(){
+var server = http.createServer(app);
+server.listen(config.get('port'), function(){
   log.info('Express server listening on port ' + config.get('port'));
 });
+
+require('./socket')(server);

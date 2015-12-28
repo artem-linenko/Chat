@@ -9,5 +9,5 @@ module.exports = function(app) {
 	app.get('/logout', require('./logout').post);
 	app.post('/logout', require('./logout').post);
 
-	app.get('/chat', checkAuth, require('./chat').get);
+	app.get('/chat', require('./chat').get);
 }
