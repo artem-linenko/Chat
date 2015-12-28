@@ -6,3 +6,20 @@ body {
 a {
   color: #00B7FF;
 }
+
+ul.dialog {
+	overflow: hidden;
+}
+
+.dialog li {
+	margin: 5px 40px 5px 0px;
+	list-style-type: none;
+	padding: 10px;
+	background-color: #8aacb8;
+	border-radius: 5px;
+}
+
+.dialog li.my-message {
+	margin: 5px 0px 5px 40px;
+	background-color: #c5e3ed;
+}

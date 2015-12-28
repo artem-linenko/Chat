@@ -7,7 +7,7 @@
    <form>
     <input class="form-control" autocomplete="off" autofocus placeholder="Сообщение...">
   </form>
-  <ul></ul>
+  <ul class="dialog"></ul>
 </div>
 
 <script>
@@ -23,14 +23,14 @@
 
     socket.emit('message', text, function(data) { 
       // in this case this function is used only to know if data is sent to server
-      $('<li>', {text: text}).appendTo(ul);
+      $('<li>', {text: "me > " + text, class: 'my-message'}).appendTo(ul);
     });
 
     return false;
   });
 
-  socket.on('message', function(text) {
-    $('<li>', {text: text}).appendTo(ul);
+  socket.on('message', function(username, text) {
+    $('<li>', {text: username + " > " + text}).appendTo(ul);
   });
 
 </script>
