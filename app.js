@@ -18,14 +18,15 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 
-var MongoStore = require('connect-mongo/src-es5')(express); // a class for  storing session information
+app.use(express.bodyParser());
 
+app.use(express.cookieParser());
 // middleware for handling sessions
 app.use(express.session({
 	secret: config.get("session:secret"),
 	key: config.get("session:key"),
 	cookie: config.get("session:cookie"),
-	store: new MongoStore({mongooseConnection: mongoose.connection})
+	store: require('./libs/sessionStore')
 }));
 
 app.use(require('./middleware/loadUser')); // initializing user if active session exists
@@ -64,4 +65,5 @@ server.listen(config.get('port'), function(){
   log.info('Express server listening on port ' + config.get('port'));
 });
 
-require('./socket')(server);
+var io = require('./socket')(server);
+app.set('io', io); // setting a global io variable to be able to use it in different parts of the app

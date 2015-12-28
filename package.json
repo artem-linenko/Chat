@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "async": "^1.5.0",
+    "connect": "^3.4.0",
     "connect-mongo": "^1.0.2",
+    "cookie": "^0.2.3",
     "crypto": "0.0.3",
     "ejs": "^2.3.4",
     "ejs-locals": "^1.0.2",
