@@ -67,8 +67,23 @@ schema.statics.authorize = function(username, password, callback) { // method fo
   ], callback);
 };
 
-exports.User = mongoose.model('User', schema);
+schema.statics.fetchAllUsers = function(callback) {
+  var User = this; // link on the class
 
+  User.find({}, function(err, users) {
+    if (err) {
+      return callback('Error occured. Please try later');
+    }
+
+    if (users) {
+      callback(null, users);
+    } else {
+      callback('No users found');
+    }
+  })
+};
+
+exports.User = mongoose.model('User', schema);
 
 function AuthError(message) {
   Error.apply(this, arguments);

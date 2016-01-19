@@ -1,0 +1,44 @@
+<% layout('./layout/page') -%>
+<% block('title', "Пользователи") -%>
+
+<table id="users-table">
+  <tbody>
+    <ul>
+      <% for(var i = 0; i < users.length; i ++) {
+        if (users[i].username != user.username) {%>
+          <tr>
+            <td name=<%= users[i]._id %>><%= users[i].username %></td>
+            <td><button>chat</button></td>
+          <tr>
+      <% }} %>
+      </ul>
+  </tbody>
+</table>
+</form>
+
+<script>
+  var table = document.getElementById('users-table');
+  table.onclick = function(e) {
+    if (e.target.nodeName === "BUTTON") {
+      var userName = e.target.parentNode.parentNode.children[0].getAttribute("name");
+    }
+
+    makeAjaxRequest(JSON.stringify({user: userName}), '/users', "POST")
+  }
+
+  function makeAjaxRequest(data, url, reqType) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200 && xhr.responseText) {
+        var res = JSON.parse(xhr.responseText);
+        
+        window.location = res.url;
+      }
+    };
+
+    xhr.open(reqType, url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json') // neccessary to set json header
+    xhr.send(data);
+  }
+</script>

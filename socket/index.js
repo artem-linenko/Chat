@@ -45,6 +45,7 @@ function loadUser(session, callback) {
 module.exports = function(server) {
   var io = require('socket.io').listen(server);
 
+  // AUTHORIZATION middleware
   io.use(function(socket, next) {
   	var handshake = socket.request;
     async.waterfall([
