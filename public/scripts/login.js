@@ -14,7 +14,7 @@ $(document.forms['login-form']).on('submit', function() {
     statusCode: {
       200: function() {
         form.html("Вы вошли в сайт").addClass('alert-success');
-        window.location.href = "/chat";
+        window.location.href = "/users";
       },
       403: function(jqXHR) {
         var error = JSON.parse(jqXHR.responseText);

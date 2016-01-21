@@ -7,7 +7,14 @@
    <form>
     <input class="form-control" autocomplete="off" autofocus placeholder="Сообщение...">
   </form>
-  <ul class="dialog"></ul>
+  <ul class="dialog">
+    <% for(var i = 0; i < messages.length; i ++) {%>
+       <li <% if (messages[i].username == user.username) {%> class="my-message" <% } %> >
+
+        <% if (messages[i].username != user.username) { %> <%= messages[i].username + " > " %> <% } %> 
+        <%= messages[i].text %></li>
+    <% } %>
+  </ul>
 </div>
 
 <script>
@@ -23,7 +30,7 @@
 
     socket.emit('message', text, function(data) { 
       // in this case this function is used only to know if data is sent to server
-      $('<li>', {text: "me > " + text, class: 'my-message'}).appendTo(ul);
+      $('<li>', {text: text, class: 'my-message'}).appendTo(ul);
     });
 
     return false;

@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');   // npm i cookie
 var sessionStore = require('./../libs/sessionStore');
 var HttpError = require('./../error').HttpError;
 var User = require('./../models/user').User;
+var Conversation = require('./../models/conversation').Conversation;
 
 function loadSession(sid, callback) {
 
@@ -14,6 +15,7 @@ function loadSession(sid, callback) {
   sessionStore.load(sid, function(err, session) {
     if (arguments.length == 0) {
       // no arguments => no session
+      // log.debug("session: " + session);
       return callback(null, null);
     } else {
       return callback(null, session);
@@ -24,8 +26,7 @@ function loadSession(sid, callback) {
 
 function loadUser(session, callback) {
 
-  if (!session.user) {
-    log.debug("Session %s is anonymous", session.id);
+  if (!session || !session.user) {
     return callback(null, null);
   }
 
@@ -36,10 +37,17 @@ function loadUser(session, callback) {
       return callback(null, null);
     }
 
-    log.debug("user: " + user);
+    // log.debug("user: " + user);
     callback(null, user);
   });
+}
 
+function writeConversationMessage(conversationId, message, callback) {
+  Conversation.addMessage(conversationId, message, function(err, success) {
+    if (success) {
+      callback(null, success);
+    }
+  })
 }
 
 module.exports = function(server) {
@@ -55,11 +63,9 @@ module.exports = function(server) {
         var sidCookie = handshake.cookies[config.get('session:key')],
         	sid = cookieParser.signedCookie(sidCookie, config.get('session:secret'));
 
-				log.info('sid: ', sid)
         loadSession(sid, callback);
       },
       function(session, callback) {
-
         if (!session) {
           callback(new HttpError(401, "No session"));
         }
@@ -74,7 +80,14 @@ module.exports = function(server) {
 
         handshake.user = user;
         callback(null, true);
+      },
+      function(user, callback) {
+        var conversationId = require('url').parse(socket.handshake.headers.referer, true).query.conversation
+
+        handshake.conversationId = conversationId;
+        callback(null, true)
       }
+      
 
     ], function(err) {
       if (!err) {
@@ -87,6 +100,7 @@ module.exports = function(server) {
 
       next(err);
     });
+
 	next();
   });
 
@@ -111,24 +125,36 @@ module.exports = function(server) {
 
         client.handshake.session = session;
       });
-        
     });
-
   });
 
   io.sockets.on('connection', function(socket) {
   	if (socket.request.user) {
-	  	var username = socket.request.user._doc.username;
-	     log.warn(username)
+	  	var username = socket.request.user._doc.username,
+        conversationId = socket.request.conversationId;
+        
+      // log.debug('conversationId: ', conversationId)
 
+      //notify that user came
 	    socket.broadcast.emit('join', username);
 
 	    socket.on('message', function(text, cb) {
-	      socket.broadcast.emit('message', username, text);
-	      console.log('text')
-	      cb("unneccesary data approving that text is accepted");
+        var message = {
+          text: text,
+          username: username,
+          timestamp: Date.now
+        }
+
+        writeConversationMessage(conversationId, message, function(err, success) {
+          if (success) {
+            socket.broadcast.emit('message', username, text);
+            cb("unneccesary data approving that text is accepted");
+          }
+        });
+
 	    });
 
+      //notify that user gone
 	    socket.on('disconnect', function() {
 	      socket.broadcast.emit('leave', username);
 	    });

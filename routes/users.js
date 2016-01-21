@@ -1,5 +1,3 @@
-var async = require('async');
-
 var User = require('./../models/user').User;
 var Conversation = require('./../models/conversation').Conversation;
 var HttpError = require('./../error').HttpError;
@@ -12,7 +10,6 @@ exports.get = function(req, res) {
       res.send(err);
     } else {
       req.users = res.locals.users = users;
-      console.log(users)
       res.render('users');
     }
   })
@@ -30,9 +27,7 @@ exports.post = function(req, res, next) {
         return next(err);
       }
     }
-    // req.session is an object to write any session properties in
-    req.session.lastConversation = conversation._id;
+
     res.send(JSON.stringify({url: '/chat?conversation=' + conversation._id}));
-    // res.redirect('/chat?conversation=' + conversation._id);
   });
 };

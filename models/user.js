@@ -83,7 +83,7 @@ schema.statics.fetchAllUsers = function(callback) {
   })
 };
 
-exports.User = mongoose.model('User', schema);
+module.exports.User = mongoose.model('User', schema);
 
 function AuthError(message) {
   Error.apply(this, arguments);
@@ -96,4 +96,4 @@ util.inherits(AuthError, Error);
 
 AuthError.prototype.name = 'AuthError';
 
-exports.AuthError = AuthError;
+module.exports.AuthError = AuthError;
