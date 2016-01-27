@@ -1,35 +1,52 @@
 <% layout('./layout/page') -%>
-<% block('title', "Users") -%>
+<% block('title') -%>
+
+<% if (conversations.length > 0) { %>
+  <div class="table-wrapper conversations-wrapper">
+    <h2>Conversations</h2>
+
+    <table id="conversations-table">
+      <tbody>
+        <% for(var i = 0; i < conversations.length; i ++) { %>
+          <tr name=<%= conversations[i].chatterer %> >
+            <td>
+              <div class="chatterer"><%= conversations[i].chatterer %></div>
+              <div class="last-message"><%= conversations[i].lastMessage %></div>
+            </td>
+          </tr>
+        <% } %>
+      </tbody> 
+    </table>
+  </div>
+<% } %>
 
 <% if (users.length !== 1) { %>
-  <table id="users-table">
-    <tbody>
-      <% for(var i = 0; i < users.length; i ++) {
-        if (users[i].username != user.username) {%>
-          <tr>
-            <td name=<%= users[i]._id %>><%= users[i].username %></td>
-            <td><button>chat</button></td>
-          <tr>
-      <% }
-      } %>
-    </tbody> 
-  </table>
-<% }  else { %>
-    <p>No users currently registered</p>
+  <div class="table-wrapper users-wrapper">
+    <h2>New users</h2>
+
+    <table id="users-table">
+      <tbody>
+        <% for(var i = 0; i < users.length; i ++) {
+          if (users[i] != user.username) {%>
+            <tr name=<%= users[i] %> >
+              <td><%= users[i] %></td>
+              <td><button>chat</button></td>
+            <tr>
+        <% }
+        } %>
+      </tbody> 
+    </table>
+  </div>
 <% } %>
-  
 
 </form>
 
 <script>
-  var table = document.getElementById('users-table');
-  table.onclick = function(e) {
-    if (e.target.nodeName === "BUTTON") {
-      var userName = e.target.parentNode.parentNode.children[0].getAttribute("name");
-      
-      makeAjaxRequest(JSON.stringify({user: userName}), '/users', "POST")
-    }
-  }
+  $('table').on('click', 'tr', function(e) {
+    var userName = e.currentTarget.attributes[0].nodeValue;
+
+    makeAjaxRequest(JSON.stringify({user: userName}), '/users', "POST")
+  })
 
   function makeAjaxRequest(data, url, reqType) {
     var xhr = new XMLHttpRequest();

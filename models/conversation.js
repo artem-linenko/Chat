@@ -41,7 +41,7 @@ schema.statics.fetchAllMessages = function(_id, callback) { // method for class 
     if (err) {
       return callback('Error occured. Please try later');
     }
-console.log(conversation)
+
     if (conversation) {
       callback(null, conversation);
     } else {
@@ -71,6 +71,12 @@ schema.statics.createConversation = function(users, callback) { // method for cl
       }
     }
   ], callback);
+};
+
+schema.statics.fetchActiveConversations = function(user, callback) { // method for class not only for instance
+  var Conversation = this; // link on the class
+  
+  Conversation.find({users: user.username}, callback);
 };
 
 exports.Conversation = mongoose.model('Conversation', schema);
