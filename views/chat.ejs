@@ -5,23 +5,36 @@
 
 <div id="room">
    <form>
-    <input class="form-control" autocomplete="off" autofocus placeholder="Сообщение...">
+    <input class="form-control" autocomplete="off" autofocus placeholder="Message">
   </form>
-  <ul class="dialog">
+  <div class="dialog">
     <% for(var i = 0; i < messages.length; i ++) {%>
-       <li <% if (messages[i].username == user.username) {%> class="my-message" <% } %> >
+      <div 
+        <% if (messages[i].username == user.username) 
+          {%> class="my-message clearfix" <% 
+        } else {
+          %> class="external-message clearfix"<%
+        }%> 
+      >
+        <div class="text"> 
+          <% if (messages[i].username != user.username) { %> <%= messages[i].username + " > " %> <% } %> 
+          <%= messages[i].text %>
+        </div>
 
-        <% if (messages[i].username != user.username) { %> <%= messages[i].username + " > " %> <% } %> 
-        <%= messages[i].text %></li>
+        <div class="time">
+          <span><%= messages[i].timestamp.getHours()%> : <%= messages[i].timestamp.getMinutes()%> </span>
+        </div>
+      </div>
     <% } %>
-  </ul>
+  </div>
 </div>
 
 <script>
   var socket = io.connect();
 
   var form = $('#room form');
-  var ul = $('#room ul');
+
+  var messageAdder = new MessageAdder();
 
   form.submit(function() {
     var input = $(this).find('input');
@@ -29,15 +42,43 @@
     input.val('');
 
     socket.emit('message', text, function(data) { 
-      // in this case this function is used only to know if data is sent to server
-      $('<li>', {text: text, class: 'my-message'}).appendTo(ul);
+      messageAdder.appendMyMessage(text);
     });
 
     return false;
   });
 
   socket.on('message', function(username, text) {
-    $('<li>', {text: username + " > " + text}).appendTo(ul);
+    messageAdder.appendExternalMessage(username, text);
   });
+
+
+  function MessageAdder() {
+    var dialogList = $('#room .dialog');
+
+    function addInnerBlocks(options) {
+      if (options.username) {
+        $('<div>', {text: options.username + " > " + options.text, class: 'text'}).appendTo(options.mainDiv);
+      } else {
+        $('<div>', {text: options.text, class: 'text'}).appendTo(options.mainDiv);
+      }
+      
+      $('<div>', {text: new Date().getHours() + " : " + new Date().getMinutes(), class: 'time'}).appendTo(options.mainDiv);
+
+      dialogList.append(options.mainDiv);
+    }
+
+    this.appendMyMessage = function (text) {
+      var mainDiv = $('<div>', {class: 'my-message clearfix'});
+
+      addInnerBlocks({mainDiv: mainDiv, text: text})
+    }
+
+    this.appendExternalMessage = function (username, text) {
+      var mainDiv = $('<div>', {class: 'external-message clearfix'});
+
+      addInnerBlocks({mainDiv: mainDiv, text: text, username: username})
+    }
+  }
 
 </script>

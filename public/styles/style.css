@@ -1,31 +1,94 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 30px;
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+.clearfix {
+    clear: both;
+}
+
+.navigation {
+	border: 1px solid gray;
+	background-color: #cdd1db;
+	border-radius: 10px;
+}
+
+.navigation .nav-1,
+.navigation .nav-2 {
+	list-style-type: none;
+	margin: 0;
+}
+
+.navigation li {
+	display: inline-block;
+	margin: 15px;
+}
+
+.navigation li a{
+	color: black;
+	text-decoration: none
+}
+
+.navigation .nav-1 {
+	padding: 0;
+	float: left;
+}
+
+.navigation .nav-2 {
+	float: right;
+}
+
 
 a {
   color: #00B7FF;
 }
 
-ul.dialog {
+.dialog {
+	width: 100%;
 	overflow: hidden;
 }
 
-.dialog li {
-	margin: 5px 40px 5px 0px;
-	list-style-type: none;
-	padding: 10px;
-	background-color: #8aacb8;
+.dialog>div {
+	width: 90%;
+	position: relative;
 	border-radius: 5px;
 }
 
-.dialog li.my-message {
-	margin: 5px 0px 5px 40px;
-	background-color: #c5e3ed;
+.dialog>div.my-message {
+	padding: 10px;
+	margin: 5px 0px 5px 10%;
+	background-color: #edf6f9;
+}
+
+.dialog>div.external-message {
+	padding: 10px;
+	margin: 5px 10% 5px 0px;
+	background-color: #C5E3ED;
+}
+
+.dialog .text {
+	float: left;
+	width: calc(100% - 80px);
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;
+}
+
+.dialog .time {
+	font-size: 14px;
+	color: #696969;
+	float: right;
+	width: 60px;
 }
 
 #users-table tr td {
 	border 1px solid gray;
 	padding: 15px;
-	font-size: 20px 
+	font-size: 20px;
 }
+
+.clearfix {
+  content:'';
+  display:table;
+  clear:both
+};

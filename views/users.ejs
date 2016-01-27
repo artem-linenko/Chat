@@ -1,19 +1,24 @@
 <% layout('./layout/page') -%>
-<% block('title', "Пользователи") -%>
+<% block('title', "Users") -%>
 
-<table id="users-table">
-  <tbody>
-    <ul>
+<% if (users.length !== 1) { %>
+  <table id="users-table">
+    <tbody>
       <% for(var i = 0; i < users.length; i ++) {
         if (users[i].username != user.username) {%>
           <tr>
             <td name=<%= users[i]._id %>><%= users[i].username %></td>
             <td><button>chat</button></td>
           <tr>
-      <% }} %>
-      </ul>
-  </tbody>
-</table>
+      <% }
+      } %>
+    </tbody> 
+  </table>
+<% }  else { %>
+    <p>No users currently registered</p>
+<% } %>
+  
+
 </form>
 
 <script>
@@ -21,9 +26,9 @@
   table.onclick = function(e) {
     if (e.target.nodeName === "BUTTON") {
       var userName = e.target.parentNode.parentNode.children[0].getAttribute("name");
+      
+      makeAjaxRequest(JSON.stringify({user: userName}), '/users', "POST")
     }
-
-    makeAjaxRequest(JSON.stringify({user: userName}), '/users', "POST")
   }
 
   function makeAjaxRequest(data, url, reqType) {

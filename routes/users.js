@@ -9,6 +9,7 @@ exports.get = function(req, res) {
       console.log(err)
       res.send(err);
     } else {
+      console.log(users.length)
       req.users = res.locals.users = users;
       res.render('users');
     }

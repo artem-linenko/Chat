@@ -1,16 +1,18 @@
-<nav class="navbar navbar-default" role="navigation">
-  <ul class="nav navbar-nav">
-    <li><a href="/">Главная</a></li>
+<nav class="navigation" role="navigation">
+  <ul class="nav-1">
+    <li><a href="/users">Main</a></li>
     <% if (user) { %>
-    <li><a href="/chat">Чат</a></li>
+    <li><a href="/chat">Chat</a></li>
     <% } %>
   </ul>
-  <ul class="nav navbar-nav navbar-right">
+  <ul class="nav-2">
     <% if (user) { %>
     <li><a><%- user.username %></a></li>
-    <li><a href="" onclick="$('<form method=POST action=/logout></form>').submit();return false">Выйти</a></li>
+    <li><a href="" onclick="$('<form method=POST action=/logout></form>').submit();return false">Log out</a></li>
     <% } else { %>
-    <li><a href="/login">Войти</a></li>
+    <li><a href="/login">Log in</a></li>
     <% } %>
   </ul>
+
+  <div class="clearfix"></div>
 </nav>

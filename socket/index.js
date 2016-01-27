@@ -142,7 +142,7 @@ module.exports = function(server) {
         var message = {
           text: text,
           username: username,
-          timestamp: Date.now
+          timestamp: new Date()
         }
 
         writeConversationMessage(conversationId, message, function(err, success) {
