@@ -1,6 +1,6 @@
 $(document.forms['login-form']).on('submit', function() {
   var form = $(this);
-
+  console.log('submit')
   $('.error', form).html('');
   $(":submit", form).button("loading");
 

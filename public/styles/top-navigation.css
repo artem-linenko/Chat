@@ -1,0 +1,39 @@
+body {
+  padding: 30px;
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.top-navigation {
+	border: 1px solid gray;
+	background-color: #5b5b5b;
+	border-radius: 10px;
+}
+
+.top-navigation .nav-1,
+.top-navigation .nav-2 {
+	list-style-type: none;
+	margin: 0;
+}
+
+.top-navigation li {
+	display: inline-block;
+	margin: 15px;
+}
+
+.top-navigation li a{
+	color: #fff;
+	text-decoration: none
+}
+
+.top-navigation .nav-1 {
+	padding: 0;
+	float: left;
+}
+
+.top-navigation .nav-2 {
+	float: right;
+}

@@ -1,0 +1,24 @@
+<form name="authForm" id="auth-form"  ng-submit="moveToPersonal()">
+
+	<input type="text" ng-model="user.auth.username" name="username" placeholder="Login" required ng-class="{invalid: authForm.username.$touched && authForm.username.$error.required}">
+
+	<input type="email" ng-model="user.auth.email" name="uMail" placeholder="Email" required
+			ng-class="{invalid: authForm.uMail.$touched && (authForm.uMail.$error.required || authForm.uMail.$error.email)}">
+	<div ng-show="authForm.$submitted || authForm.uMail.$touched">
+		<span ng-show="authForm.uMail.$error.email">This email is not valid</span>
+	</div>
+
+	<input type="password" name="password" ng-model="user.auth.password" placeholder="Password" required
+			ng-class="{invalid: authForm.password.$touched && authForm.password.$error.required}">
+
+	<input type="password" name="confirm" ng-model="user.auth.confirm" placeholder="Confirm password"
+		ng-class="{invalid: authForm.confirm.$touched && (authForm.confirm.$error.required || user.auth.password != user.auth.confirm)}"
+    	ui-validate=" '$value==user.auth.password' "
+    	ui-validate-watch=" 'user.auth.password' "
+    	required>
+	<div ng-show="authForm.$submitted || authForm.confirm.$touched">
+		<span ng-show="user.auth.password != user.auth.confirm">Password should be the same</span>
+	</div>
+
+	<input type="submit" class="submit" ng-disabled="authForm.$invalid" value="Continue">
+</form>

@@ -1,0 +1,37 @@
+.dialog {
+	width: 100%;
+	overflow: hidden;
+}
+
+.dialog>div {
+	width: 90%;
+	position: relative;
+	border-radius: 5px;
+}
+
+.dialog>div.my-message {
+	padding: 10px;
+	margin: 5px 0px 5px 10%;
+	background-color: #edf6f9;
+}
+
+.dialog>div.external-message {
+	padding: 10px;
+	margin: 5px 10% 5px 0px;
+	background-color: #C5E3ED;
+}
+
+.dialog .text {
+	float: left;
+	width: calc(100% - 60px);
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;
+}
+
+.dialog .time {
+	font-size: 14px;
+	color: #696969;
+	float: right;
+	width: 50px;
+}

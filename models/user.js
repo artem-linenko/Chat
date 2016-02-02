@@ -19,6 +19,22 @@ var schema = new Schema({
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  additionalInfo: {
+    type: String,
+    required: false
+  },
+  birthDate: {
+    type: Date,
+    required: true
+  },
   created: {
     type: Date,
     default: Date.now
@@ -57,7 +73,24 @@ schema.statics.authorize = function(username, password, callback) { // method fo
           callback(new AuthError("Wrong password"));
         }
       } else {
-        var user = new User({username: username, password: password}); // if user wasn't found in DB - create one
+        callback(new AuthError("Cannot find the user"));
+      }
+    }
+  ], callback);
+};
+
+schema.statics.register = function(userInfo, callback) {
+  var User = this;
+
+  async.waterfall([
+    function(callback) {
+      User.findOne({username: userInfo.username}, callback); // find a user in DB and convey to the next function, if no user was found user == null
+    },
+    function(user, callback) {
+      if (user) {
+        callback(new AuthError("User already exists"));
+      } else {
+        var user = new User(userInfo); // if user wasn't found in DB - create one
         user.save(function(err) {
           if (err) return callback(err);
           callback(null, user);
@@ -65,7 +98,8 @@ schema.statics.authorize = function(username, password, callback) { // method fo
       }
     }
   ], callback);
-};
+
+}
 
 schema.statics.fetchAllUsers = function(callback) {
   var User = this; // link on the class

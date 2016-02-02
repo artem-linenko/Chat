@@ -3,15 +3,14 @@ var HttpError = require('./../error').HttpError;
 var AuthError = require('./../models/user').AuthError;
 
 exports.get = function(req, res) {
-  res.render('login');
+  res.render('register');
 };
 
 exports.post = function(req, res, next) {
 	// req.body is provided by bodyParser middleware
-  var username = req.body.username;
-  var password = req.body.password;
+  var userInfo = req.body.userInfo;
 
-  User.authorize(username, password, function(err, user) {
+  User.register(userInfo, function(err, user) {
     if (err) {
       if (err instanceof AuthError) {
         return next(new HttpError(403, err.message));

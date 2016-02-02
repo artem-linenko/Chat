@@ -1,0 +1,35 @@
+.table-wrapper {
+	display: inline-block;
+	width: 40%;
+	max-height: 600px;
+}
+
+table tr {
+	height: 60px;
+	border-bottom: 1px solid #b4b4b4;
+}
+
+table tr:hover {
+	background-color: #ededed;
+	cursor: pointer;
+}
+
+table tr td{
+	padding: 5px;
+	font-size: 20px;
+}
+
+#conversations-table .last-message {
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: 10px;
+	font-size: 16px;
+	color: #b4b4b4;
+}
+
+.clearfix {
+  content:'';
+  display:table;
+  clear:both
+};

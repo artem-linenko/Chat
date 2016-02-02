@@ -1,0 +1,8 @@
+<ul class="navigation">
+	<li name="authentication" 
+		ng-class="{active: activeTab == 'authentication', passed: userPermissions.auth == true}">Authentication</li>
+	<li name="personal" 
+		ng-class="{active: activeTab == 'personal', passed: userPermissions.personal == true}">Personal</li>
+	<li name="sending" 
+		ng-class="{active: activeTab == 'sending'}">Sending</li>
+</ul>

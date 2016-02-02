@@ -1,0 +1,28 @@
+<ul id="info-list">
+	<li ng-click='showUser()'>
+		<h4>Login</h4>
+		<p>{{user.auth.username}}</p>
+	</li>
+	<li>
+		<h4>Password</h4>
+		<p>{{user.auth.password}}</p>
+	</li>
+	<li>
+		<h4>Email</h4>
+		<p>{{user.auth.email}}</p>
+	</li>
+	<li>
+		<h4>Name</h4>
+		<p>{{user.personal.name}}</p>
+	</li>
+	<li>
+		<h4>Birth Date</h4>
+		<p>{{user.personal.birthDate}}</p>
+	</li>
+	<li>
+		<h4>Additional information</h4>
+		<p>{{user.personal.additionalInfo}}</p>
+	</li>
+</ul>
+
+<input type="submit" class="send" ng-disabled="!allowSendingRequest" value="Send" ng-click="registerUser()">

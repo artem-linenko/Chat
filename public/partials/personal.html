@@ -1,0 +1,16 @@
+<form name="persForm" id="pers-form"  ng-submit="moveToSending()">
+
+	<input type="text" ng-model="user.personal.name" name="name" placeholder="Name" required ng-class="{invalid: persForm.name.$touched && persForm.name.$error.required}">
+	
+	<input type="date" ng-model="user.personal.birthDate" name="birthDate" required
+		ng-class="{invalid: persForm.birthDate.$touched && (persForm.birthDate.$error.required || persForm.birthDate.$error.date)}">
+	<div ng-show="persForm.$submitted || persForm.uMail.$touched">
+		<span ng-show="persForm.uMail.$error.email">This email is not valid</span>
+	</div>
+
+	<textarea name="additionalInfo" ng-model="user.personal.additionalInfo" placeholder="Additional information"  maxlength='512'>
+	</textarea>
+	<label for="additionalInfo">Digits left: {{512 - persForm.addInfo.$viewValue.length}}</label>
+
+	<input type="submit" class="submit" ng-disabled="persForm.$invalid" value="Continue">
+</form>
